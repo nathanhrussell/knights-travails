@@ -8,3 +8,30 @@ function getKnightMoves([x, y]) {
 
     return moves.filter(([nx, ny]) => nx >= 0 && ny >= 0 && nx < 8 && ny < 8);
 }
+
+function knightMoves(start, end) {
+    const queue = [];
+    const visited = new Set();
+
+    queue.push({ pos: start, path: [start] });
+    visited.add(start.toString());
+
+    while (queue.length > 0) {
+        const { pos, path } = queue.shift();
+
+        if (pos[0] === end[0] && pos[1] === end[1]) {
+            return path;
+        }
+
+        const nextMoves = getKnightMoves(pos);
+        for (const move of nextMoves) {
+            const key = move.toString();
+            if (!visited.has(key)) {
+                visited.add(key);
+                queue.push({ pos: start, path: [...path,  move] });
+            }
+        }
+     }
+
+     return [];
+}
